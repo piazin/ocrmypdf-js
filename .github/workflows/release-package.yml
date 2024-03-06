@@ -5,7 +5,8 @@ on:
     types: [created]
 
 jobs:
-  build:
+  prerequisites:
+    name: Prerequisites
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -13,6 +14,14 @@ jobs:
         with:
           node-version: 16
       - run: sudo apt update && sudo apt install ocrmypdf -y
+      - run: npm ci
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16
       - run: npm ci
       - run: npm test
 
