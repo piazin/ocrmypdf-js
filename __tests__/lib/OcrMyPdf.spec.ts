@@ -42,7 +42,7 @@ describe("OcrMyPdf", () => {
       const inputPath = resolve("./public/pdf.test.pdf");
       const outputPath = resolve("./public/pdf-ocr.test.pdf");
 
-      const rawCommand = `-l por ${inputPath} ${outputPath}`;
+      const rawCommand = `ocrmypdf -l por ${inputPath} ${outputPath}`;
 
       const result = await ocrMyPdf.executeRaw(rawCommand);
       expect(result).resolves;
