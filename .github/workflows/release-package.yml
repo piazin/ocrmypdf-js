@@ -14,10 +14,8 @@ jobs:
           node-version: 16
       - name: Install ocrmypdf
         run: |
-          sudo apt update
-          sudo apt upgrade -y
           sudo apt install ocrmypdf -y
-          sudo apt-get install tesseract-ocr-por
+          sudo apt-get install tesseract-ocr-por -y
       - run: npm ci
       - run: npm test
 
