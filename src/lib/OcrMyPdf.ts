@@ -4,7 +4,7 @@ import { execShellCommand } from "@/utils";
  * Represents a class for executing OCR on PDF files using the ocrmypdf command-line tool.
  */
 export class OcrMyPdf {
-  private readonly args?: string[] = ["-l por"];
+  private readonly args?: string[];
   private readonly inputPath?: string;
   private readonly outputPath?: string;
 
