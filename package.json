@@ -21,7 +21,7 @@
     "url": "git+https://github.com/piazin/ocrmypdf-js.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "@piazin/registry": "https://npm.pkg.github.com"
   },
   "homepage": "https://github.com/piazin/ocrmypdf-js",
   "keywords": [
