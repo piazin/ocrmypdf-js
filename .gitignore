@@ -6,3 +6,4 @@
 # Ignore test-related files
 /coverage.data
 /coverage/
+/public/pdf-ocr.test.pdf
