@@ -14,8 +14,8 @@ jobs:
         with:
           node-version: 16
       - run: sudo apt update && sudo apt install ocrmypdf -y
-      - run: npm ci
   build:
+    needs: prerequisites 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
