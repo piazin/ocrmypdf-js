@@ -1,6 +1,6 @@
 {
   "name": "ocrmypdf-js",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Abstração da lib ocrmypdf",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -19,6 +19,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/piazin/ocrmypdf-js.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "homepage": "https://github.com/piazin/ocrmypdf-js",
   "keywords": [
