@@ -12,11 +12,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 16
-      - name: Install ocrmypdf
-        run: |
-          sudo apt update
-          sudo apt upgrade -y
-          sudo apt install ocrmypdf -y
+      - run: sudo apt update && sudo apt install ocrmypdf -y
       - run: npm ci
       - run: npm test
 
