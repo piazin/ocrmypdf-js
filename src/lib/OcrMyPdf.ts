@@ -1,4 +1,5 @@
 import { execShellCommand } from "@/utils";
+import { OcrMyPdfMethodsParams, OcrMyPdfParams } from "@/types";
 
 /**
  * Represents a class for executing OCR on PDF files using the ocrmypdf command-line tool.
@@ -31,7 +32,7 @@ export class OcrMyPdf {
 
   async executeRaw(args: string) {
     try {
-      return await execShellCommand(`ocrmypdf ${args}`);
+      return await execShellCommand(`${args}`);
     } catch (error) {
       throw error;
     }

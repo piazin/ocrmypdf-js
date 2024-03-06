@@ -1,6 +1,6 @@
 {
   "name": "ocrmypdf-js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Abstração da lib ocrmypdf",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -19,7 +19,10 @@
     "url": "ocrmypdf-js"
   },
   "keywords": [
-    "ocr"
+    "ocr",
+    "pdf",
+    "ocrmypdf",
+    "parse"
   ],
   "author": "Lucas Souza",
   "license": "ISC",
