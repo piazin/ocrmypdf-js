@@ -1,6 +1,6 @@
 {
   "name": "ocrmypdf-js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Abstração da lib ocrmypdf",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
