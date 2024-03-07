@@ -1,4 +1,4 @@
-import { execShellCommand } from "@/utils";
+import { execShellCommand, logger } from "@/utils";
 import { OcrMyPdfMethodsParams, OcrMyPdfParams } from "@/types";
 
 /**
@@ -23,10 +23,18 @@ export class OcrMyPdf {
    * @throws Throws an error if the execution fails.
    */
   async execute(params?: OcrMyPdfMethodsParams) {
+    logger.info("Executing OCR on the PDF file...");
+
     try {
       return await this.executeOcrMyPdfInShell(params);
     } catch (error) {
+      logger.error(
+        `Failed to execute OCR on the PDF file: ${error.message}`,
+        this.execute.name
+      );
       throw error;
+    } finally {
+      logger.info("Finished executing OCR on the PDF file.");
     }
   }
 
@@ -37,10 +45,16 @@ export class OcrMyPdf {
    * @returns The output of the command.
    */
   async executeRaw(args: string) {
+    logger.info("Executing a raw command in the shell...");
     try {
       return await execShellCommand(args);
     } catch (error) {
+      logger.error(
+        `Failed to execute a raw command in the shell: ${error.message}`
+      );
       throw error;
+    } finally {
+      logger.info("Finished executing a raw command in the shell.");
     }
   }
 
