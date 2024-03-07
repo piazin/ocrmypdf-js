@@ -30,9 +30,15 @@ export class OcrMyPdf {
     }
   }
 
+  /**
+   * Executes a raw command in the shell.
+   * @param args - The command to execute.
+   * @throws Throws an error if the execution fails.
+   * @returns The output of the command.
+   */
   async executeRaw(args: string) {
     try {
-      return await execShellCommand(`${args}`);
+      return await execShellCommand(args);
     } catch (error) {
       throw error;
     }
