@@ -17,11 +17,29 @@ describe("OcrMyPdf", () => {
       await expect(ocrMyPdf.execute()).rejects.toThrow("is not defined");
     });
 
+    it("should pass the arguments successfully", async () => {
+      const inputPath = resolve("./public/pdf.test.pdf");
+      const outputPath = resolve("./public/pdf-ocr.test.pdf");
+
+      const result = await ocrMyPdf.execute({
+        inputPath,
+        outputPath,
+        args: ["--force-ocr", "-l por"],
+      });
+
+      expect(result).resolves;
+      expect(result).toEqual({ outputPath });
+    });
+
     it("should OCR the PDF successfully", async () => {
       const inputPath = resolve("./public/pdf.test.pdf");
       const outputPath = resolve("./public/pdf-ocr.test.pdf");
 
-      const result = await ocrMyPdf.execute({ inputPath, outputPath, args: ['--force-ocr'] });
+      const result = await ocrMyPdf.execute({
+        inputPath,
+        outputPath,
+        args: ["--force-ocr"],
+      });
       expect(result).resolves;
       expect(result).toEqual({ outputPath });
     });

@@ -68,7 +68,7 @@ export class OcrMyPdf {
         throw new Error("inputPath or outputPath is not defined!");
 
       await execShellCommand(
-        `ocrmypdf ${args?.join("")} ${inputPath} ${outputPath}`
+        `ocrmypdf ${args?.join(" ")} ${inputPath} ${outputPath}`
       );
 
       return {
