@@ -51,8 +51,7 @@ describe("OcrMyPdf", () => {
       const result = await ocrMyPdf.execute({
         inputPath,
         outputPath,
-        args: ["--force-ocr"],
-        options: { returnText: true },
+        args: ["--force-ocr", "--return-text"],
       });
       expect(result).resolves;
       expect(result).toEqual({ outputPath, outputText: expect.any(String) });

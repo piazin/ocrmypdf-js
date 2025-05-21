@@ -1,13 +1,11 @@
 import os from "os";
 import fs from "fs/promises";
 import { execShellCommand, logger } from "@/utils";
-import {
-  OcrMyPdfMethodsParams,
-  OcrMyPdfOptions,
-  OcrMyPdfParams,
-  OcrMyPdfReturn,
-} from "@/types";
+import { OcrMyPdfMethodsParams, OcrMyPdfParams, OcrMyPdfReturn } from "@/types";
 
+const CUSTOM_ARGS = {
+  "--return-text": "--return-text",
+};
 /**
  * Represents a class for executing OCR on PDF files using the ocrmypdf command-line tool.
  */
@@ -15,7 +13,6 @@ export class OcrMyPdf {
   private readonly args?: string[];
   private readonly inputPath?: string;
   private readonly outputPath?: string;
-  private readonly options?: OcrMyPdfOptions;
 
   /**
    * Creates an instance of the OcrMyPdf class.
@@ -71,26 +68,24 @@ export class OcrMyPdf {
       let text = "",
         outputTempFilePath = `${os.tmpdir()}/output.txt`;
 
-      const args = [].concat(params?.args || "").concat(this?.args || ""),
-        inputPath = params?.inputPath || this.inputPath,
-        outputPath = params?.outputPath || this.outputPath,
-        options = params?.options || this.options,
-        returnText = options?.returnText
-          ? `--sidecar ${outputTempFilePath}`
-          : "";
-
       let result = {} as OcrMyPdfReturn;
 
-      if (!inputPath || !outputPath)
-        throw new Error("inputPath or outputPath is not defined!");
+      const { args, customArgs, inputPath, outputPath, returnText } =
+        this.parseParams(params, outputTempFilePath);
+
+      this.validateParams({
+        inputPath,
+      });
 
       await execShellCommand(
-        `ocrmypdf ${returnText} ${args?.join(" ")} ${inputPath} ${outputPath}`
+        `ocrmypdf ${returnText} ${args?.join(" ")} ${inputPath} ${
+          outputPath || inputPath
+        }`
       );
 
       result["outputPath"] = outputPath;
 
-      if (options?.returnText) {
+      if (customArgs.includes(CUSTOM_ARGS["--return-text"])) {
         text = await this.returnTextOcrMyPdf(outputTempFilePath);
         result["outputText"] = text;
       }
@@ -114,5 +109,38 @@ export class OcrMyPdf {
     } finally {
       await fs.unlink(`${temporaryTextFilePath}`);
     }
+  }
+
+  private validateParams(params: OcrMyPdfParams) {
+    if (!params.inputPath) {
+      throw new Error("inputPath is not defined");
+    }
+  }
+
+  private parseParams(params: OcrMyPdfParams, outputTempFilePath: string) {
+    let customArgs: string[] = [];
+
+    let args = [].concat(params?.args || "").concat(this?.args || ""),
+      inputPath = params?.inputPath || this.inputPath,
+      outputPath = params?.outputPath || this.outputPath,
+      returnText = "";
+
+    Object.keys(CUSTOM_ARGS).forEach((arg) => {
+      if (args.includes(arg)) {
+        customArgs.push(arg);
+        args = args.filter((a) => a !== arg);
+      }
+    });
+
+    if (customArgs.includes(CUSTOM_ARGS["--return-text"]))
+      returnText = `--sidecar ${outputTempFilePath}`;
+
+    return {
+      args,
+      inputPath,
+      outputPath,
+      returnText,
+      customArgs,
+    };
   }
 }
