@@ -71,9 +71,12 @@ import { OcrMyPdf } from "ocrmypdf-js";
 })();
 ```
 
-#### Return Text
+> [!NOTE]
+> The `-l por` args to work requires the additional selected language to be installed, see how [install](https://ocrmypdf.readthedocs.io/en/latest/languages.html);
+>
+> #### Custom args
 
-The `options: { returnText: true }` parameter returns the text of the PDF in a string format.
+The `args: ['--return-text']` args returns the text of the PDF in a string format.
 
 ```typescript
 import { OcrMyPdf } from "ocrmypdf-js";
@@ -84,12 +87,9 @@ import { resolve } from "path";
   const { outputText } = await ocrmypdf.execute({
     inputPath: resolve("path/simple.pdf"),
     outputPath: resolve("path/simple-ocr.pdf"),
-    options: { returnText: true },
+    args: ["--return-text"],
   });
 
   console.log(outputText);
 })();
 ```
-
-> [!NOTE]
-> The `-l por` args to work requires the additional selected language to be installed, see how [install](https://ocrmypdf.readthedocs.io/en/latest/languages.html);
