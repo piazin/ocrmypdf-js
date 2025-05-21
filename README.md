@@ -71,5 +71,25 @@ import { OcrMyPdf } from "ocrmypdf-js";
 })();
 ```
 
+#### Return Text
+
+The `options: { returnText: true }` parameter returns the text of the PDF in a string format.
+
+```typescript
+import { OcrMyPdf } from "ocrmypdf-js";
+import { resolve } from "path";
+(async () => {
+  const ocrmypdf = new OcrMyPdf();
+
+  const { outputText } = await ocrmypdf.execute({
+    inputPath: resolve("path/simple.pdf"),
+    outputPath: resolve("path/simple-ocr.pdf"),
+    options: { returnText: true },
+  });
+
+  console.log(outputText);
+})();
+```
+
 > [!NOTE]
 > The `-l por` args to work requires the additional selected language to be installed, see how [install](https://ocrmypdf.readthedocs.io/en/latest/languages.html);
