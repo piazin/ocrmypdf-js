@@ -1,5 +1,12 @@
+import os from "os";
+import fs from "fs/promises";
 import { execShellCommand, logger } from "@/utils";
-import { OcrMyPdfMethodsParams, OcrMyPdfParams } from "@/types";
+import {
+  OcrMyPdfMethodsParams,
+  OcrMyPdfOptions,
+  OcrMyPdfParams,
+  OcrMyPdfReturn,
+} from "@/types";
 
 /**
  * Represents a class for executing OCR on PDF files using the ocrmypdf command-line tool.
@@ -8,6 +15,7 @@ export class OcrMyPdf {
   private readonly args?: string[];
   private readonly inputPath?: string;
   private readonly outputPath?: string;
+  private readonly options?: OcrMyPdfOptions;
 
   /**
    * Creates an instance of the OcrMyPdf class.
@@ -60,22 +68,51 @@ export class OcrMyPdf {
 
   private async executeOcrMyPdfInShell(params: OcrMyPdfMethodsParams) {
     try {
-      const args = [].concat(params?.args || "").concat(this?.args || "");
-      const inputPath = params?.inputPath || this.inputPath;
-      const outputPath = params?.outputPath || this.outputPath;
+      let text = "",
+        outputTempFilePath = `${os.tmpdir()}/output.txt`;
+
+      const args = [].concat(params?.args || "").concat(this?.args || ""),
+        inputPath = params?.inputPath || this.inputPath,
+        outputPath = params?.outputPath || this.outputPath,
+        options = params?.options || this.options,
+        returnText = options?.returnText
+          ? `--sidecar ${outputTempFilePath}`
+          : "";
+
+      let result = {} as OcrMyPdfReturn;
 
       if (!inputPath || !outputPath)
         throw new Error("inputPath or outputPath is not defined!");
 
       await execShellCommand(
-        `ocrmypdf ${args?.join(" ")} ${inputPath} ${outputPath}`
+        `ocrmypdf ${returnText} ${args?.join(" ")} ${inputPath} ${outputPath}`
       );
 
+      result["outputPath"] = outputPath;
+
+      if (options?.returnText) {
+        text = await this.returnTextOcrMyPdf(outputTempFilePath);
+        result["outputText"] = text;
+      }
+
       return {
-        outputPath,
+        ...result,
       };
     } catch (error) {
       throw error;
+    }
+  }
+
+  private async returnTextOcrMyPdf(
+    temporaryTextFilePath: string
+  ): Promise<string> {
+    try {
+      const text = await fs.readFile(`${temporaryTextFilePath}`, "utf-8");
+      return text;
+    } catch (error) {
+      throw new Error(`Failed to read the output text file: ${error.message}`);
+    } finally {
+      await fs.unlink(`${temporaryTextFilePath}`);
     }
   }
 }

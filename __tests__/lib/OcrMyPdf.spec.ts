@@ -43,6 +43,20 @@ describe("OcrMyPdf", () => {
       expect(result).resolves;
       expect(result).toEqual({ outputPath });
     });
+
+    it("should OCR the PDF and return text successfully", async () => {
+      const inputPath = resolve("./public/pdf.test.pdf");
+      const outputPath = resolve("./public/pdf-ocr.test.pdf");
+
+      const result = await ocrMyPdf.execute({
+        inputPath,
+        outputPath,
+        args: ["--force-ocr"],
+        options: { returnText: true },
+      });
+      expect(result).resolves;
+      expect(result).toEqual({ outputPath, outputText: expect.any(String) });
+    });
   });
 
   describe("executeRaw", () => {

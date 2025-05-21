@@ -2,8 +2,12 @@
 
 # Build files
 /dist
+/tmp/*.txt
 
 # Ignore test-related files
 /coverage.data
 /coverage/
 /public/pdf-ocr.test.pdf
+
+# vscode
+/.vscode
